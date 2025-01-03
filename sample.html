@@ -1,0 +1,50 @@
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <canvas id="customChart" width="400" height="200"></canvas>
+    <script>
+        ZOHO.CREATOR.API.getAllRecords({
+            reportName: "Sales_Data_Report",
+            onSuccess: function (response) {
+                const records = response.data;
+                const labels = records.map(record => record.Product);
+                const salesData = records.map(record => record.Sales);
+
+                const ctx = document.getElementById('customChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Sales Data',
+                            data: salesData,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            },
+            onFailure: function (error) {
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>
